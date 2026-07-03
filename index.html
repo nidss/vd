@@ -65,6 +65,12 @@
     <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
     </symbol>
+    <symbol id="icon-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m3 16 4 4 4-4"></path>
+      <path d="M7 20V4"></path>
+      <path d="m21 8-4-4-4 4"></path>
+      <path d="M17 4v16"></path>
+    </symbol>
   </svg>
 
   <div class="app-container">
@@ -96,11 +102,11 @@
 
         <!-- List / Table View Toggle -->
         <div class="view-toggle">
-          <button id="btn-list-view" class="toggle-btn active" title="Show cards list view">
+          <button id="btn-list-view" class="toggle-btn" title="Show cards list view">
             <svg><use href="#icon-list"></use></svg>
             <span>List</span>
           </button>
-          <button id="btn-table-view" class="toggle-btn" title="Show spreadsheet table view">
+          <button id="btn-table-view" class="toggle-btn active" title="Show spreadsheet table view">
             <svg><use href="#icon-table"></use></svg>
             <span>Table</span>
           </button>
@@ -225,26 +231,26 @@
         </div>
 
         <!-- View 1: List View (Cards Grid) -->
-        <section id="list-view" class="villas-grid">
+        <section id="list-view" class="villas-grid hidden">
           <!-- Rendered dynamically -->
         </section>
 
         <!-- View 2: Table View (Spreadsheet Grid) -->
-        <section id="table-view" class="table-view-container hidden">
+        <section id="table-view" class="table-view-container">
           <div class="table-scroll-wrapper">
             <table class="dashboard-table">
               <thead>
                 <tr>
-                  <th class="sticky-col">House Name</th>
-                  <th>Distance to Sea</th>
-                  <th>Bedrooms</th>
-                  <th>Bathrooms</th>
-                  <th>Floors</th>
-                  <th>Selected Day Price</th>
-                  <th>Max Guests</th>
-                  <th>Selected Day Avg/Person</th>
-                  <th>Pet Fee</th>
-                  <th>Extra Person Fee</th>
+                  <th class="sticky-col sortable active-sort asc" data-sort="house_name">House Name <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="far_sea">Distance to Sea <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="bed_room">Bedrooms <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="toilet">Bathrooms <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="total_floor">Floors <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="price">Selected Day Price <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="max_people">Max Guests <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="avg_price_per_person">Selected Day Avg/Person <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="extra_fee_per_pet">Pet Fee <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
+                  <th class="sortable" data-sort="extra_fee_per_person">Extra Person Fee <svg class="sort-icon"><use href="#icon-sort"></use></svg></th>
                   <th>Mon Price</th>
                   <th>Mon Avg/Person</th>
                   <th>Tue Price</th>

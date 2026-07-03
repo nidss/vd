@@ -3,7 +3,9 @@ let appState = {
   villas: [], // Raw villa data (either live fetched or fallback)
   filteredVillas: [], // Filtered subset
   activeDay: 'monday', // Current active day for calculations and filtering
-  currentView: 'list', // 'list' or 'table'
+  currentView: 'table', // Default to table view
+  sortColumn: 'house_name', // Default sort column
+  sortDirection: 'asc', // Default sort direction
   filters: {
     searchQuery: '',
     maxPrice: 40000,
@@ -379,6 +381,35 @@ function applyFilters() {
     }
     
     return true;
+  });
+  
+  // Sort the filtered list
+  const col = appState.sortColumn;
+  const dir = appState.sortDirection === 'asc' ? 1 : -1;
+  
+  appState.filteredVillas.sort((a, b) => {
+    let valA, valB;
+    
+    // Resolve dynamic keys
+    if (col === 'price') {
+      valA = a[`price_${day}`] || 0;
+      valB = b[`price_${day}`] || 0;
+    } else if (col === 'max_people') {
+      valA = a[`max_people_${day}`] || 0;
+      valB = b[`max_people_${day}`] || 0;
+    } else if (col === 'avg_price_per_person') {
+      valA = a[`avg_price_per_person_${day}`] || 0;
+      valB = b[`avg_price_per_person_${day}`] || 0;
+    } else {
+      valA = a[col];
+      valB = b[col];
+    }
+    
+    if (typeof valA === 'string') {
+      return valA.localeCompare(valB) * dir;
+    } else {
+      return (valA - valB) * dir;
+    }
   });
   
   appState.table.currentPage = 1; // Reset pagination when filter changes
@@ -904,6 +935,26 @@ function setupEventListeners() {
   // Theme Toggle Button
   DOM.btnThemeToggle.addEventListener('click', () => {
     toggleTheme();
+  });
+  // Table sorting headers
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.getAttribute('data-sort');
+      if (appState.sortColumn === col) {
+        appState.sortDirection = appState.sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        appState.sortColumn = col;
+        appState.sortDirection = 'asc';
+      }
+      
+      // Update UI classes for headers
+      document.querySelectorAll('th.sortable').forEach(t => {
+        t.classList.remove('active-sort', 'asc', 'desc');
+      });
+      th.classList.add('active-sort', appState.sortDirection);
+      
+      applyFilters();
+    });
   });
 }
 

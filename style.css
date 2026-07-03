@@ -382,10 +382,10 @@ header {
 }
 
 .day-btn {
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: #FFFFFF;
+  border: 1px solid #7470FF;
   border-radius: var(--radius-sm);
-  color: var(--text-secondary);
+  color: #5C58FF;
   padding: 8px 4px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -394,14 +394,15 @@ header {
 }
 
 .day-btn:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  color: var(--text-primary);
+  background: rgba(195, 193, 255, 0.15);
+  border-color: #7470FF;
+  color: #5C58FF;
 }
 
 .day-btn.active {
-  background: var(--bg-badge-gold);
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
+  background: #C3C1FF !important;
+  border-color: #7470FF !important;
+  color: #5C58FF !important;
 }
 
 /* Range sliders */
@@ -414,9 +415,9 @@ header {
 input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 6px;
+  border-radius: 3px;
+  background: #C3C1FF !important;
   outline: none;
 }
 
@@ -426,7 +427,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent-cyan);
+  background: #5C58FF !important;
   cursor: pointer;
   transition: transform 0.1s;
 }
@@ -435,8 +436,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
 }
 
-input[type="range"].gold-range::-webkit-slider-thumb {
-  background: var(--accent-gold);
+/* Firefox support for range sliders */
+input[type="range"]::-moz-range-track {
+  background: #C3C1FF;
+  height: 6px;
+  border-radius: 3px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: #5C58FF;
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /* Number Filters Panel */
@@ -1052,4 +1065,47 @@ input[type="range"].gold-range::-webkit-slider-thumb {
   .toggle-btn {
     padding: 8px 12px;
   }
+}
+
+/* Light mode header color override */
+body.light-mode header {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+/* Table sorting styles */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.sortable:hover {
+  color: var(--text-cyan) !important;
+}
+
+.sort-icon {
+  width: 12px;
+  height: 12px;
+  margin-left: 6px;
+  vertical-align: middle;
+  stroke: var(--text-muted);
+  fill: none;
+  transition: all 0.2s;
+}
+
+.sortable:hover .sort-icon {
+  stroke: var(--accent-cyan);
+}
+
+.sortable.active-sort {
+  color: var(--text-cyan);
+}
+
+.sortable.active-sort .sort-icon {
+  stroke: var(--accent-cyan);
+}
+
+.sortable.desc .sort-icon {
+  transform: rotate(180deg);
 }
