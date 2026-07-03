@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Villadd Pool Villa Dashboard</title>
+  <meta name="description" content="Premium read-only dashboard for exploring and filtering Villadd pool villas with comprehensive price breakdown and average price per person metrics.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SVG Icon Library (Inlined for reliability and performance) -->
+  <svg class="hidden">
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </symbol>
+    <symbol id="icon-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M2 13h20"></path>
+    </symbol>
+    <symbol id="icon-toilet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19h16M6 5v14M18 5v14M6 9h12M6 13h12M10 5v4M14 5v4"></path>
+    </symbol>
+    <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+    </symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polygon points="2 17 12 22 22 17"></polygon><polygon points="2 12 12 17 22 12"></polygon>
+    </symbol>
+    <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </symbol>
+    <symbol id="icon-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line>
+    </symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </symbol>
+    <symbol id="icon-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+    </symbol>
+    <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </symbol>
+    <symbol id="icon-pet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </symbol>
+  </svg>
+
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="logo-section">
+        <img id="app-logo" src="Logo_dark.png" alt="Villadd Logo">
+        <span>Villadd<span class="accent-text">Dashboard</span></span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Live Data Status Indicator -->
+        <div id="data-source-status" class="data-source-badge">
+          <span class="dot"></span>
+          <span id="data-source-text">Loading data...</span>
+        </div>
+
+        <!-- List / Table View Toggle -->
+        <div class="view-toggle">
+          <button id="btn-list-view" class="toggle-btn active" title="Show cards list view">
+            <svg><use href="#icon-list"></use></svg>
+            <span>List</span>
+          </button>
+          <button id="btn-table-view" class="toggle-btn" title="Show spreadsheet table view">
+            <svg><use href="#icon-table"></use></svg>
+            <span>Table</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Area -->
+    <div class="main-wrapper">
+      
+      <!-- Collapsible Sidebar Filters -->
+      <aside id="filter-sidebar" class="sidebar">
+        <!-- Search -->
+        <div class="filter-group">
+          <label for="search-box" class="filter-label">Search Villa</label>
+          <input type="text" id="search-box" class="search-input" placeholder="Type house name...">
+        </div>
+
+        <!-- Day Selector -->
+        <div class="filter-group">
+          <label class="filter-label">Active Day <span id="lbl-active-day" class="filter-value">Monday</span></label>
+          <div class="day-selector-grid">
+            <button class="day-btn active" data-day="monday">Mon</button>
+            <button class="day-btn" data-day="tuesday">Tue</button>
+            <button class="day-btn" data-day="wednesday">Wed</button>
+            <button class="day-btn" data-day="thursday">Thu</button>
+            <button class="day-btn" data-day="friday">Fri</button>
+            <button class="day-btn" data-day="saturday">Sat</button>
+            <button class="day-btn" data-day="sunday">Sun</button>
+          </div>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="filter-group range-container">
+          <label for="filter-price" class="filter-label">Max Price <span id="lbl-price" class="filter-value">0 THB</span></label>
+          <input type="range" id="filter-price" class="gold-range" min="0" max="40000" step="500">
+        </div>
+
+        <!-- Guests Capacity Slider -->
+        <div class="filter-group range-container">
+          <label for="filter-guests" class="filter-label">Guests <span id="lbl-guests" class="filter-value">0 Persons</span></label>
+          <input type="range" id="filter-guests" min="0" max="50" step="1">
+        </div>
+
+        <!-- Bedrooms, Bathrooms, Floors Grid -->
+        <div class="number-filter-grid">
+          <div class="number-input-wrap">
+            <label for="filter-bedrooms" class="filter-label">Bedrooms</label>
+            <select id="filter-bedrooms" class="number-select">
+              <option value="any">Any</option>
+              <option value="2">2+ Rooms</option>
+              <option value="3">3+ Rooms</option>
+              <option value="4">4+ Rooms</option>
+              <option value="5">5+ Rooms</option>
+              <option value="6">6+ Rooms</option>
+              <option value="8">8+ Rooms</option>
+            </select>
+          </div>
+
+          <div class="number-input-wrap">
+            <label for="filter-bathrooms" class="filter-label">Bathrooms</label>
+            <select id="filter-bathrooms" class="number-select">
+              <option value="any">Any</option>
+              <option value="2">2+ Toilets</option>
+              <option value="3">3+ Toilets</option>
+              <option value="4">4+ Toilets</option>
+              <option value="5">5+ Toilets</option>
+              <option value="6">6+ Toilets</option>
+              <option value="8">8+ Toilets</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="number-filter-grid">
+          <div class="number-input-wrap">
+            <label for="filter-floors" class="filter-label">Floors</label>
+            <select id="filter-floors" class="number-select">
+              <option value="any">Any</option>
+              <option value="1">1 Floor</option>
+              <option value="2">2 Floors</option>
+              <option value="3">3+ Floors</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Distance to Sea Slider -->
+        <div class="filter-group range-container">
+          <label for="filter-distance" class="filter-label">Distance to Sea <span id="lbl-distance" class="filter-value">Any</span></label>
+          <input type="range" id="filter-distance" min="0" max="15000" step="100">
+        </div>
+
+        <!-- Reset Button -->
+        <button id="btn-reset" class="reset-btn">Reset All Filters</button>
+      </aside>
+
+      <!-- Main Dashboard Panel -->
+      <main class="dashboard-content">
+        
+        <!-- Stats Summary Bar -->
+        <section class="stats-container">
+          <div class="stat-card">
+            <span class="stat-title">Matching Villas</span>
+            <span id="stat-count" class="stat-value">0</span>
+          </div>
+          <div class="stat-card gold">
+            <span class="stat-title">Avg Daily Price</span>
+            <span id="stat-avg-price" class="stat-value">0<span>THB</span></span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-title">Avg Price / Person</span>
+            <span id="stat-avg-person" class="stat-value">0<span>THB</span></span>
+          </div>
+          <div class="stat-card rose">
+            <span class="stat-title">Lowest Daily Price</span>
+            <span id="stat-min-price" class="stat-value">0<span>THB</span></span>
+          </div>
+        </section>
+
+        <!-- Active Filters Badge Summary -->
+        <div id="active-badges" class="filter-summary">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- View 1: List View (Cards Grid) -->
+        <section id="list-view" class="villas-grid">
+          <!-- Rendered dynamically -->
+        </section>
+
+        <!-- View 2: Table View (Spreadsheet Grid) -->
+        <section id="table-view" class="table-view-container hidden">
+          <div class="table-scroll-wrapper">
+            <table class="dashboard-table">
+              <thead>
+                <tr>
+                  <th class="sticky-col">House Name</th>
+                  <th>Distance to Sea</th>
+                  <th>Bedrooms</th>
+                  <th>Bathrooms</th>
+                  <th>Floors</th>
+                  <th>Selected Day Price</th>
+                  <th>Max Guests</th>
+                  <th>Selected Day Avg/Person</th>
+                  <th>Pet Fee</th>
+                  <th>Extra Person Fee</th>
+                  <th>Mon Price</th>
+                  <th>Mon Avg/Person</th>
+                  <th>Tue Price</th>
+                  <th>Tue Avg/Person</th>
+                  <th>Wed Price</th>
+                  <th>Wed Avg/Person</th>
+                  <th>Thu Price</th>
+                  <th>Thu Avg/Person</th>
+                  <th>Fri Price</th>
+                  <th>Fri Avg/Person</th>
+                  <th>Sat Price</th>
+                  <th>Sat Avg/Person</th>
+                  <th>Sun Price</th>
+                  <th>Sun Avg/Person</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="table-info">Showing 1-15 of 91 entries</span>
+            <div id="table-pagination" class="pagination-controls">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Fallback No Results UI -->
+        <div id="no-results-panel" class="no-results hidden">
+          <svg><use href="#icon-close"></use></svg>
+          <p>No villas found matching the active criteria.</p>
+          <button id="btn-reset-empty" class="toggle-btn active" style="margin-top: 10px;">Clear Filters</button>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Floating Mobile Filters Button -->
+  <button id="btn-mobile-filters" class="mobile-filter-toggle" title="Toggle filters panel">
+    <svg><use href="#icon-filter"></use></svg>
+  </button>
+
+  <!-- Load Data fallback first, then application logic -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
