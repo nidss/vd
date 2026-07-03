@@ -584,7 +584,7 @@ function renderListView() {
     const price = villa[`price_${day}`] || 0;
     const maxPeople = villa[`max_people_${day}`] || 0;
     const avgPerPerson = villa[`avg_price_per_person_${day}`] || 0;
-    const distanceText = villa.far_sea === 0 ? 'Beachfront' : `${formatNumber(villa.far_sea)} m`;
+    const distanceText = villa.far_sea === 0 ? 'Beachfront' : `${parseFloat((villa.far_sea / 1000).toFixed(2))} km`;
     
     // Create Villa Card element
     const card = document.createElement('div');
@@ -707,7 +707,7 @@ function renderTableView() {
   pageItems.forEach(villa => {
     const row = document.createElement('tr');
     
-    const distanceText = villa.far_sea === 0 ? 'Beachfront' : `${formatNumber(villa.far_sea)} m`;
+    const distanceText = villa.far_sea === 0 ? 'Beachfront' : `${parseFloat((villa.far_sea / 1000).toFixed(2))} km`;
     const selectedPrice = villa[`price_${day}`] || 0;
     const selectedMax = villa[`max_people_${day}`] || 0;
     const selectedAvg = villa[`avg_price_per_person_${day}`] || 0;
@@ -718,25 +718,12 @@ function renderTableView() {
       <td>${villa.bed_room}</td>
       <td>${villa.toilet}</td>
       <td>${villa.total_floor}</td>
-      <td style="color: var(--text-gold);">${formatNumber(selectedPrice)} THB</td>
       <td>${selectedMax}</td>
+      <td style="color: var(--text-gold);">${formatNumber(selectedPrice)} THB</td>
       <td style="color: var(--text-cyan);">${formatNumber(selectedAvg)} THB</td>
       <td>${villa.extra_fee_per_pet > 0 ? `${formatNumber(villa.extra_fee_per_pet)} THB` : '0'}</td>
       <td>${villa.extra_fee_per_person > 0 ? `${formatNumber(villa.extra_fee_per_person)} THB` : '0'}</td>
     `;
-    
-    // Add all 7 days columns
-    DAYS.forEach(d => {
-      const p = villa[`price_${d}`] || 0;
-      const avg = villa[`avg_price_per_person_${d}`] || 0;
-      const isSelectedDay = d === day;
-      const cellBg = isSelectedDay ? 'style="background: rgba(56, 189, 248, 0.05);"' : '';
-      
-      rowHTML += `
-        <td ${cellBg}>${formatNumber(p)} THB</td>
-        <td ${cellBg} ${isSelectedDay ? 'style="color: var(--text-cyan);"' : ''}>${formatNumber(avg)} THB</td>
-      `;
-    });
     
     row.innerHTML = rowHTML;
     DOM.tableBody.appendChild(row);
