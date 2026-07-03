@@ -473,7 +473,7 @@ function renderStats() {
   });
   
   const avgPrice = Math.round(totalPrice / count);
-  const avgPricePerson = Math.round((totalAvgPerPerson / count) * 100) / 100;
+  const avgPricePerson = Math.round(totalAvgPerPerson / count);
   
   DOM.statAvgPrice.innerHTML = `${formatNumber(avgPrice)}<span>THB</span>`;
   DOM.statAvgPerson.innerHTML = `${formatNumber(avgPricePerson)}<span>THB</span>`;
@@ -617,7 +617,7 @@ function renderListView() {
       <!-- Big Highlights: Selected Day Price and Max Capacity -->
       <div class="avg-price-highlight-box">
         <span class="box-label">Price per Person (${capitalizeFirstLetter(day)})</span>
-        <span class="box-value">${formatNumber(avgPerPerson)} THB</span>
+        <span class="box-value">${formatNumber(Math.round(avgPerPerson))} THB</span>
         <span class="box-sublabel">Calculated from ${formatNumber(price)} THB / ${maxPeople} Guests</span>
       </div>
 
@@ -672,7 +672,7 @@ function renderListView() {
           <td class="day-col ${d === day ? 'highlight-col' : ''}">${d.substring(0, 3)}</td>
           <td>${formatNumber(p)} THB</td>
           <td>${m} pax</td>
-          <td ${isActive}>${formatNumber(avg)} THB</td>
+          <td ${isActive}>${formatNumber(Math.round(avg))} THB</td>
         </tr>
       `;
     });
@@ -720,7 +720,7 @@ function renderTableView() {
       <td>${villa.total_floor}</td>
       <td>${selectedMax}</td>
       <td style="color: var(--text-gold);">${formatNumber(selectedPrice)} THB</td>
-      <td style="color: var(--text-cyan);">${formatNumber(selectedAvg)} THB</td>
+      <td style="color: var(--text-cyan);">${formatNumber(Math.round(selectedAvg))} THB</td>
       <td>${villa.extra_fee_per_pet > 0 ? `${formatNumber(villa.extra_fee_per_pet)} THB` : '0'}</td>
       <td>${villa.extra_fee_per_person > 0 ? `${formatNumber(villa.extra_fee_per_person)} THB` : '0'}</td>
     `;
