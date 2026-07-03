@@ -30,6 +30,9 @@ const DOM = {
   statusText: document.getElementById('data-source-text'),
   btnListView: document.getElementById('btn-list-view'),
   btnTableView: document.getElementById('btn-table-view'),
+  btnSync: document.getElementById('btn-sync'),
+  btnThemeToggle: document.getElementById('btn-theme-toggle'),
+  themeBtnIcon: document.getElementById('theme-btn-icon'),
   listViewContainer: document.getElementById('list-view'),
   tableViewContainer: document.getElementById('table-view'),
   tableBody: document.getElementById('table-body'),
@@ -69,6 +72,7 @@ const DOM = {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   initData();
   setupEventListeners();
 });
@@ -125,6 +129,75 @@ function updateStatus(type, message) {
     DOM.statusBadge.style.background = 'rgba(244, 63, 94, 0.1)';
     DOM.statusBadge.style.borderColor = 'rgba(244, 63, 94, 0.2)';
     DOM.statusBadge.style.color = '#f43f5e';
+  }
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+    DOM.logo.src = 'Logo_dark.png';
+    DOM.themeBtnIcon.innerHTML = '<use href="#icon-moon"></use>';
+  } else {
+    document.body.classList.remove('light-mode');
+    DOM.logo.src = 'Logo_light.png';
+    DOM.themeBtnIcon.innerHTML = '<use href="#icon-sun"></use>';
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light-mode');
+  if (isLight) {
+    localStorage.setItem('theme', 'light');
+    DOM.logo.src = 'Logo_dark.png';
+    DOM.themeBtnIcon.innerHTML = '<use href="#icon-moon"></use>';
+  } else {
+    localStorage.setItem('theme', 'dark');
+    DOM.logo.src = 'Logo_light.png';
+    DOM.themeBtnIcon.innerHTML = '<use href="#icon-sun"></use>';
+  }
+}
+
+async function syncData() {
+  const syncIcon = DOM.btnSync.querySelector('svg');
+  syncIcon.classList.add('spinning');
+  DOM.btnSync.disabled = true;
+  
+  const prevStatusText = DOM.statusText.textContent;
+  const prevStatusClass = DOM.statusBadge.className;
+  updateStatus('loading', 'Syncing...');
+  
+  const startTime = Date.now();
+  
+  try {
+    const cacheBuster = `&cb=${Date.now()}`;
+    const response = await fetch(GOOGLE_SHEET_CSV_URL + cacheBuster);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const csvText = await response.text();
+    const parsedData = parseCSV(csvText);
+    
+    if (parsedData && parsedData.length > 0) {
+      appState.villas = parsedData;
+      updateStatus('live', 'Live Data');
+      applyFilters();
+    } else {
+      throw new Error('Parsed data was empty or invalid');
+    }
+  } catch (error) {
+    console.error('Sync failed:', error);
+    alert('Sync failed: Could not fetch fresh data from Google Sheets. Using cached/offline data.');
+    DOM.statusBadge.className = prevStatusClass;
+    DOM.statusText.textContent = prevStatusText;
+  } finally {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, 600 - elapsed);
+    
+    setTimeout(() => {
+      syncIcon.classList.remove('spinning');
+      DOM.btnSync.disabled = false;
+    }, remaining);
   }
 }
 
@@ -821,6 +894,16 @@ function setupEventListeners() {
         DOM.filterSidebar.classList.remove('mobile-open');
       }
     }
+  });
+  
+  // Sync Button
+  DOM.btnSync.addEventListener('click', () => {
+    syncData();
+  });
+  
+  // Theme Toggle Button
+  DOM.btnThemeToggle.addEventListener('click', () => {
+    toggleTheme();
   });
 }
 
