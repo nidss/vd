@@ -135,7 +135,7 @@ function updateStatus(type, message) {
 }
 
 function initTheme() {
-  const savedTheme = localStorage.getItem('theme') || 'dark';
+  const savedTheme = localStorage.getItem('theme') || 'light';
   if (savedTheme === 'light') {
     document.body.classList.add('light-mode');
     DOM.logo.src = 'Logo_dark.png';
