@@ -712,8 +712,17 @@ function renderTableView() {
     const selectedMax = villa[`max_people_${day}`] || 0;
     const selectedAvg = villa[`avg_price_per_person_${day}`] || 0;
     
+    // Replace spaces with + for keyword link
+    const linkKeyword = villa.house_name.split(' ').join('+');
+    const externalLink = `https://villadd.com/th/villas?keyword=${linkKeyword}`;
+    
     let rowHTML = `
-      <td class="sticky-col">${villa.house_name}</td>
+      <td class="sticky-col">
+        <a href="${externalLink}" target="_blank" class="villa-link" title="Open in villadd.com">
+          <span>${villa.house_name}</span>
+          <svg class="external-link-icon"><use href="#icon-external-link"></use></svg>
+        </a>
+      </td>
       <td>${distanceText}</td>
       <td>${villa.bed_room}</td>
       <td>${villa.toilet}</td>
